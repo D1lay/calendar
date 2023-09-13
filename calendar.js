@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const calendarContent = document.getElementById("calendarContent");
 
     // URL к файлу calendar.ics
-    const icsFileURL = 'https://wdho.ru/b4V3/calendar.ics';
+    const icsFileURL = 'https://raw.githubusercontent.com/D1lay/calendar/main/calendar.ics';
 
     // Загружаем содержимое файла
     fetch(icsFileURL)
