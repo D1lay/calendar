@@ -6,7 +6,7 @@
     <title>Календарь</title>
 </head>
 <body>
-    <input type="button" id="loadButton" value="Загрузить календарь">
+    <input type="file" id="fileInput">
     <div id="data"></div>
 
     <script>
@@ -50,16 +50,17 @@
             }
         }
 
-        // Обработчик нажатия на кнопку "Загрузить календарь"
-        document.getElementById('loadButton').addEventListener('click', function () {
-            fetch('https://github.com/D1lay/calendar/raw/1ab9e790f70296c1f7ebf8b0ab29512289805150/calendar.ics')
-                .then(response => response.text())
-                .then(icsData => {
-                    displayData(icsData);
-                })
-                .catch(error => {
-                    console.error('Ошибка загрузки файла:', error);
-                });
+        // Обработчик изменения файла
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const icsData = e.target.result;
+                displayData(icsData);
+            };
+
+            reader.readAsText(file);
         });
     </script>
 </body>
