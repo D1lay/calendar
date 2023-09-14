@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь</title>
+</head>
+<body>
+    <input type="button" id="loadButton" value="Загрузить календарь">
+    <div id="data"></div>
+
+    <script>
+        // Функция для парсинга ICS-данных
+        function parseICS(icsData) {
+            const lines = icsData.split('\n');
+            const events = [];
+            let event = {};
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.startsWith('BEGIN:VEVENT')) {
+                    event = {};
+                } else if (line.startsWith('END:VEVENT')) {
+                    events.push(event);
+                } else {
+                    const [key, value] = line.split(':');
+                    event[key] = value;
+                }
+            }
+
+            return events;
+        }
+
+        // Функция для отображения данных календаря
+        function displayData(icsData) {
+            const events = parseICS(icsData);
+
+            const dataDiv = document.getElementById('data');
+            dataDiv.innerHTML = ''; // Очистка предыдущих данных
+
+            for (const event of events) {
+                const eventDiv = document.createElement('div');
+                eventDiv.innerHTML = `
+                    <strong>${event.SUMMARY}</strong><br>
+                    <em>${event.DTSTART}</em><br>
+                    ${event.LOCATION}<br>
+                    ${event.DESCRIPTION}<br><br>
+                `;
+                dataDiv.appendChild(eventDiv);
+            }
+        }
+
+        // Обработчик нажатия на кнопку "Загрузить календарь"
+        document.getElementById('loadButton').addEventListener('click', function () {
+            fetch('https://github.com/D1lay/calendar/raw/1ab9e790f70296c1f7ebf8b0ab29512289805150/calendar.ics')
+                .then(response => response.text())
+                .then(icsData => {
+                    displayData(icsData);
+                })
+                .catch(error => {
+                    console.error('Ошибка загрузки файла:', error);
+                });
+        });
+    </script>
+</body>
+</html>
