@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Расписание</h1>
+    <table>
+        <tr>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Предмет</th>
+            <th>Аудитория</th>
+            <th>Преподаватель</th>
+        </tr>
+        {% for day, events in schedule.items() %}
+        <tr>
+            <td rowspan="{{ events|length }}">{{ day }}</td>
+            {% for event in events %}
+            <td>{{ event.time_range }}</td>
+            <td>{{ event.summary }}</td>
+            <td>{{ event.location }}</td>
+            <td>{{ event.description }}</td>
+            </tr>
+            {% if not loop.last %}
+            <tr>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
