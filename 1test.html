@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>MiniApp</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        button { padding: 10px 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1 id="username"></h1>
+    <button id="sendBtn">Отправить</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("name") || "Гость";
+
+        document.getElementById("username").innerText = `Ваше имя - ${name}`;
+
+        document.getElementById("sendBtn").addEventListener("click", () => {
+            // Отправляем строку в бота
+            tg.sendData(name);
+            tg.close();
+        });
+    </script>
+</body>
+</html>
